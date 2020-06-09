@@ -86,6 +86,7 @@ class LoginView(GenericAPIView):
         response = Response(serializer.data, status=status.HTTP_200_OK)
         if getattr(settings, 'REST_USE_JWT', False):
             cookie_name = getattr(settings, 'JWT_AUTH_COOKIE', None)
+            cookie_domain = getattr(settings, 'JWT_AUTH_COOKIE_DOMAIN', None)
             from rest_framework_simplejwt.settings import api_settings as jwt_settings
             if cookie_name:
                 from datetime import datetime
@@ -93,6 +94,7 @@ class LoginView(GenericAPIView):
                 response.set_cookie(
                     cookie_name,
                     self.access_token,
+                    domain=cookie_domain,
                     expires=expiration,
                     httponly=True
                 )
